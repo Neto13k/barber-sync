@@ -28,5 +28,5 @@ Projeto em desenvolvimento ativo.
 
 ## 👨‍💻 Autor
 
-José Neto  
+José Hermes  
 https://github.com/Neto13k
