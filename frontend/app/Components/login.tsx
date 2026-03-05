@@ -25,12 +25,12 @@ export function Login() {
         <br></br><br></br>
 
         <input
-          type="text"
+          type="password"
           placeholder="Digite sua senha"
-          {...register("nome", { required: "Nome é obrigatório" })}
+          {...register("password", { required: "password é obrigatório" })}
         />
 
-        {errors.email && <p>Preencha todos os campos</p>}
+        {errors.password && <p>Preencha todos os campos</p>}
 
         <br></br><br></br>
 
