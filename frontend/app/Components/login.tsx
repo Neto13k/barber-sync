@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 export function Login() {
   const { register, handleSubmit, formState: {errors} } = useForm();
 
   function onSubmit() {
-    alert("Dados enviados com sucesso!");
+    alert("Login realizado com sucesso!");
   }
 
   return (
