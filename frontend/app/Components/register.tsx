@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 export function RegisterUser() {
   const {
     register,
@@ -21,12 +21,12 @@ export function RegisterUser() {
       <form onSubmit={handleSubmit(console.log)}>
         <input
           {...register("firstName", { required: "Nome é obrigatório" })}
-          placeholder="First name"
+          placeholder="Nome"
         />
 
         <input
           {...register("lastName", { minLength: 2 })}
-          placeholder="Last name"
+          placeholder="Sobrenome"
         />
 
         <input
