@@ -3,6 +3,7 @@ const router = express.Router()
 const pool = require('../database/barber_sync')
 const cors = require('cors')
 
+router.use(cors())
 
 router.get('/', (req, res) => {
     res.send('Lista de usuários');
