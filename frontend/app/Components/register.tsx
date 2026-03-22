@@ -18,7 +18,7 @@ export function RegisterUser() {
 
   const onSubmit = async (data: any) => {
     try {
-      await api.post("/user", data);
+      await api.post("/users", data);
       console.log("Dados enviados com sucesso:", data);
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
