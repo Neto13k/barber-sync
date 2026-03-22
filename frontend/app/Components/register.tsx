@@ -13,6 +13,7 @@ export function RegisterUser() {
       lastName: "",
       email: "",
       password: "",
+      isBarber: false,
     },
   });
 
@@ -58,6 +59,14 @@ export function RegisterUser() {
         />
 
         {errors.password && <p>Preencha todos os campos</p>}
+
+        <br></br>
+        <br></br>
+
+        <label>
+          <input type="checkbox" {...register("isBarber")} />
+          Sou Barbeiro
+        </label>
 
         <br></br>
         <br></br>
