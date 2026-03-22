@@ -1,12 +1,24 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";   
+import { api } from "../services/api";
 
 export function Login() {
+  const navigate = useNavigate();         
   const { register, handleSubmit, formState: {errors} } = useForm();
 
-  function onSubmit() {
-    alert("Login realizado com sucesso!");
-  }
+  const onSubmit = async (data: any) => {
+      try {
+        const response = await api.post("/users/login", data);
+        
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+          console.log("Login realizado com sucesso!");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Dados não encontrados", error);
+      }
+    };
 
   return (
     <div>

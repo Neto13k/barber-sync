@@ -2,8 +2,9 @@ const express = require ('express');
 const router = express.Router()
 const pool = require('../database/barber_sync')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const secretKey = "Senha"
+const secretKey = process.env.JWT_SECRET;
 
 function authMiddleware(req, res, next){
     const authHeader = req.headers['authorization']
