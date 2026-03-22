@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { api } from "../services/api";
+
 export function RegisterUser() {
   const {
     register,
@@ -14,11 +16,20 @@ export function RegisterUser() {
     },
   });
 
+  const onSubmit = async (data: any) => {
+    try {
+      await api.post("/user", data);
+      console.log("Dados enviados com sucesso:", data);
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+    }
+  };
+
   return (
     <div>
       <p>Informe seus dados </p>
 
-      <form onSubmit={handleSubmit(console.log)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("firstName", { required: "Nome é obrigatório" })}
           placeholder="Nome"
