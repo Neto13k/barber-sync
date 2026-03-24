@@ -1,52 +1,66 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";   
 import { api } from "../services/api";
+import { useState } from "react";
 
 export function Login() {
-  const navigate = useNavigate();         
-  const { register, handleSubmit, formState: {errors} } = useForm();
+  const navigate = useNavigate();
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data: any) => {
-      try {
-        const response = await api.post("/users/login", data);
-        
-        if (response.data.token) {
-          localStorage.setItem("token", response.data.token);
-          console.log("Login realizado com sucesso!");
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Dados não encontrados", error);
+    setIsLoading(true);
+    setLoginError(null);
+    try {
+      const response = await api.post("/users/login", data);
+
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        console.log("Login realizado com sucesso!");
+        navigate("/");
       }
-    };
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Erro ao realizar login. Tente novamente.";
+      setLoginError(message);
+      console.error("Erro no login:", message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
       <p>Informe seus dados </p>
+
+      {loginError && <p>{loginError}</p>}
 
       <form onSubmit={handleSubmit(onSubmit)}>
 
         <input
           type="email"
           placeholder="Digite seu e-mail"
-          {...register("email", { required: "Email é obrigatório" })}
+          {...register("email", { required: "E-mail é obrigatório" })}
         />
 
-        {errors.email && <p>Preencha todos os campos</p>}
+        {errors.email && <p>{String(errors.email.message)}</p>}
 
         <br></br><br></br>
 
         <input
           type="password"
           placeholder="Digite sua senha"
-          {...register("password", { required: "password é obrigatório" })}
+          {...register("password", { required: "Senha é obrigatória" })}
         />
 
-        {errors.password && <p>Preencha todos os campos</p>}
+        {errors.password && <p>{String(errors.password.message)}</p>}
 
         <br></br><br></br>
 
-        <button type="submit">Enviar</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Enviando..." : "Enviar"}
+        </button>
 
       </form>
 
