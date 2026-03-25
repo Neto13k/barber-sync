@@ -5,5 +5,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <h1>Página de acesso</h1>;
+  return <h1>BarberSync</h1>;
 }
