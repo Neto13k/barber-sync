@@ -65,3 +65,5 @@ export function Home() {
     </div>
   );
 }
+
+export { servicesData };
