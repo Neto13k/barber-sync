@@ -3,7 +3,6 @@ const router = express.Router()
 const pool = require('../database/barber_sync')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const secretKey = process.env.JWT_SECRET;
 
 function authMiddleware(req, res, next){
@@ -59,7 +58,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign({userId: user.id}, secretKey, {expiresIn: '1h'});
-    res.status(200).json({token});  
+    res.status(200).json({token, user: {id: user.id, user.firstName, lastName: user.lastName, email: user.email, isBarber: user.is_barber}});  
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erro interno do servidor" });
