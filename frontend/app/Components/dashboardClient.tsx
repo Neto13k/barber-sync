@@ -60,7 +60,6 @@ export function DashboardClient() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="service">Selecione o serviço:</label>
-              <br />
               <select 
                 id="service" 
                 {...register("service", { required: "O serviço é obrigatório" })}
@@ -72,29 +71,23 @@ export function DashboardClient() {
                   </option>
                 ))}
               </select>
-              {errors.service && <p style={{ color: "red" }}>{errors.service.message}</p>}
+              {errors.service && <p>{errors.service.message}</p>}
             </div>
-
-            <br />
 
             <div>
               <label htmlFor="appointmentDate">Data e Hora:</label>
-              <br />
               <input
                 id="appointmentDate"
                 type="datetime-local"
                 {...register("appointmentDate", { required: "A data e hora são obrigatórias" })}
               />
               {errors.appointmentDate && (
-                <p style={{ color: "red" }}>{errors.appointmentDate.message}</p>
+                <p>{errors.appointmentDate.message}</p>
               )}
             </div>
 
-            <br />
-
             <div>
               <label htmlFor="notes">Observações (opcional):</label>
-              <br />
               <textarea
                 id="notes"
                 {...register("notes", { maxLength: { value: 500, message: "Máximo de 500 caracteres" } })}
@@ -102,10 +95,8 @@ export function DashboardClient() {
                 rows={4}
                 cols={40}
               />
-              {errors.notes && <p style={{ color: "red" }}>{errors.notes.message}</p>}
+              {errors.notes && <p>{errors.notes.message}</p>}
             </div>
-
-            <br />
 
             <button type="submit">Confirmar Agendamento</button>
           </form>
