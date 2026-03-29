@@ -19,7 +19,13 @@ export function Login() {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         console.log("Login realizado com sucesso!");
-        navigate("/login");
+
+        // Redirecionamento de acordo com o tipo de usuário
+        if(response.data.user.isBarber) {
+          navigate("/dashboard/barber");
+        } else {
+          navigate("/dashboard/client"); 
+        }
       }
     } catch (error: any) {
       const message = error.response?.data?.message || "Erro ao realizar login. Tente novamente.";
