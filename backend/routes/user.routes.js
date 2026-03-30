@@ -61,16 +61,16 @@ router.post("/login", async (req,res) => {
       return res.status(401).json({Message: "Senha ou login não encontrados."});
     }
 
-    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id, isBarber: user.is_barber }, secretKey, { expiresIn: '1h' });
 
     res.status(200).json({
       token,
       user:{
         id: user.id,
-        firstName: user.firstname,
-        lastName: user.lastName,
+        firstName: user.first_name,
+        lastName: user.last_name,
         email: user.email,
-        isBarber: user.is_Barber,
+        isBarber: user.is_barber,
       }
     });
   } catch (error) {
