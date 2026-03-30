@@ -5,7 +5,6 @@ export const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-
 });
 
 
@@ -29,6 +28,9 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       console.error('Não autorizado - Refaça o login');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
