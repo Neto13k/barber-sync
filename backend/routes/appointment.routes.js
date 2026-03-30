@@ -77,7 +77,53 @@ router.get('/', authMiddleware, async (req,res) =>{
     }
 });
 
-//Rota para cancelar agendamento
+// Rota para o barbeiro ver todos os agendamentos
+router.get('/all', authMiddleware, async (req, res) => {
+    try {
+        if (!req.user.isBarber) {
+            return res.status(403).json({ message: "Acesso negado. Apenas barbeiros podem acessar todos os agendamentos." });
+        }
+
+        const query = `
+            SELECT a.*, s.title as service_title, s.price as service_price, u.first_name || ' ' || u.last_name as client_name, u.email as client_email
+            FROM appointments a
+            LEFT JOIN services s ON a.service_id = s.id
+            LEFT JOIN users u ON a.client_id = u.id
+            ORDER BY a.appointment_date ASC
+        `;
+        const result = await pool.query(query);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao buscar todos os agendamentos" });
+    }
+});
+
+// Rota para atualizar o status do agendamento (concluir/cancelar)
+router.put('/:id', authMiddleware, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!req.user.isBarber) {
+            return res.status(403).json({ message: "Acesso negado. Apenas barbeiros podem atualizar o status." });
+        }
+
+        const query = "UPDATE appointments SET status = $1 WHERE id = $2 RETURNING *";
+        const result = await pool.query(query, [status, id]);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: "Agendamento não encontrado" });
+        }
+
+        res.status(200).json({ message: `Agendamento ${status} com sucesso!` });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erro ao atualizar status do agendamento" });
+    }
+});
+
+//Rota para cancelar agendamento (pelo cliente)
 router.delete("/:id", authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
