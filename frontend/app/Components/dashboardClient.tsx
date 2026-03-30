@@ -1,10 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { servicesData } from "./home";
+import { api } from "../services/api";
+
+interface IService {
+  id: number;
+  title: string;
+  description: string;
+  price: string;
+  duration_minutes: number;
+}
+
+interface IAppointment {
+  id: number;
+  service_title: string;
+  service_price: string;
+  appointment_date: string;
+  status: string;
+  notes: string;
+}
 
 interface IAppointmentInput {
-  service: string;
+  serviceId: number;
   appointmentDate: string;
   notes?: string;
 }
@@ -12,21 +29,47 @@ interface IAppointmentInput {
 export function DashboardClient() {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [services, setServices] = useState<IService[]>([]);
+  const [appointments, setAppointments] = useState<IAppointment[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IAppointmentInput>();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    const token = localStorage.getItem("token");
+
+    if (storedUser && token) {
       setUser(JSON.parse(storedUser));
+      fetchServices();
+      fetchAppointments();
     } else {
       navigate("/login");
     }
   }, [navigate]);
+
+  const fetchServices = async () => {
+    try {
+      const response = await api.get("/appointments/services");
+      setServices(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar serviços:", error);
+    }
+  };
+
+  const fetchAppointments = async () => {
+    try {
+      const response = await api.get("/appointments");
+      setAppointments(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar agendamentos:", error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -34,9 +77,23 @@ export function DashboardClient() {
     navigate("/login");
   };
 
-  const onSubmit: SubmitHandler<IAppointmentInput> = (data) => {
-    console.log("Dados do agendamento:", data);
-    alert(`Serviço agendado com sucesso para ${data.appointmentDate}!`);
+  const onSubmit: SubmitHandler<IAppointmentInput> = async (data) => {
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      await api.post("/appointments", data, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      alert("Agendamento realizado com sucesso!");
+      reset();
+      fetchAppointments();
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Erro ao realizar agendamento.";
+      alert(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!user) return <p>Carregando...</p>;
@@ -50,28 +107,45 @@ export function DashboardClient() {
       </header>
 
       <main>
-        <section>
+                <section>
           <h2>Meus Agendamentos</h2>
-          <p>Você ainda não possui agendamentos.</p>
+          {appointments.length === 0 ? (
+            <p>Você ainda não possui agendamentos.</p>
+          ) : (
+            <ul>
+              {appointments.map((apt) => (
+                <li key={apt.id}>
+                  <strong>{apt.service_title}</strong> - {new Date(apt.appointment_date).toLocaleString()} <br />
+                  Status: {apt.status} | Valor: R$ {apt.service_price}
+                  {apt.notes && (
+                    <>
+                      <br />
+                      <em>Observações: {apt.notes}</em>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         <section>
-          <h2>Agendar Serviço</h2>
+          <h2>Agendar serviço</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label htmlFor="service">Selecione o serviço:</label>
-              <select 
-                id="service" 
-                {...register("service", { required: "O serviço é obrigatório" })}
+              <label htmlFor="serviceId">Selecione o serviço:</label>
+              <select
+                id="serviceId" 
+                {...register("serviceId", { required: "Seleção de serviço é obrigatória" })}
               >
                 <option value="">-- Escolha um serviço --</option>
-                {servicesData.map((service) => (
+                {services.map((service) => (
                   <option key={service.id} value={service.id}>
-                    {service.title} - {service.price}
+                    {service.title} - R$ {service.price}
                   </option>
                 ))}
               </select>
-              {errors.service && <p>{errors.service.message}</p>}
+              {errors.serviceId && <p>{errors.serviceId.message}</p>}
             </div>
 
             <div>
@@ -98,11 +172,13 @@ export function DashboardClient() {
               {errors.notes && <p>{errors.notes.message}</p>}
             </div>
 
-            <button type="submit">Confirmar Agendamento</button>
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? "Processando..." : "Confirmar Agendamento"}
+            </button>
           </form>
         </section>
       </main>
-    </div>
+    </div>  
   );
 }
 
