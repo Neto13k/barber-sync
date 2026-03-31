@@ -80,10 +80,7 @@ export function DashboardClient() {
   const onSubmit: SubmitHandler<IAppointmentInput> = async (data) => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      await api.post("/appointments", data, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post("/appointments", data);
       
       alert("Agendamento realizado com sucesso!");
       reset();
