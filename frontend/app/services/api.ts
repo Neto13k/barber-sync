@@ -22,15 +22,22 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => {
-    return response; 
-  },
+  (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      console.error('Não autorizado - Refaça o login');
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+    // 401 (Não autorizado) ou 403 (Proibido/Token expirado)
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      const currentPath = window.location.pathname;
+      
+      // Evita loop infinito se já estiver na tela de login
+      if (currentPath !== "/login") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        
+        // Redireciona para o login apenas se não for uma tentativa de login falha
+        if (!error.config.url?.includes("/users/login")) {
+          window.location.href = "/login";
+        }
+      }
     }
     return Promise.reject(error);
   }
