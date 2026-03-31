@@ -36,24 +36,45 @@ router.get('/services', async (req, res) => {
 // Rota para criar um novo agendamento
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const { serviceId, appointmentdate, notes } = req.body;
+        const { serviceId, appointmentDate, notes } = req.body;
         const clientId = req.user.userId;
+
+        // 1. Validar se a data é retroativa
+        const selectedDate = new Date(appointmentDate);
+        const now = new Date();
+
+        if (selectedDate < now) {
+            return res.status(400).json({ message: "Não é possível agendar para uma data ou hora passada." });
+        }
+
+        // 2. Verificar conflitos de horário (Double Booking)
+        // Vamos considerar um intervalo de 30 minutos entre agendamentos por padrão, ou buscar a duração do serviço
+        const conflictCheckQuery = `
+            SELECT * FROM appointments 
+            WHERE appointment_date = $1 
+            AND status != 'cancelled'
+        `;
+        const conflictResult = await pool.query(conflictCheckQuery, [appointmentDate]);
+
+        if (conflictResult.rows.length > 0) {
+            return res.status(409).json({ message: "Este horário já está reservado. Por favor, escolha outro." });
+        }
 
         const query = `
             INSERT INTO appointments (client_id, service_id, appointment_date, notes, status) 
             VALUES ($1, $2, $3, $4, 'pending') 
             RETURNING *
         `;
-        const values = [clientId, serviceId, appointmentdate, notes];
+        const values = [clientId, serviceId, appointmentDate, notes];
 
         const result = await pool.query(query, values);
         res.status(201).json({
             message: "Agendamento realizado com sucesso!!",
             appointments: result.rows[0]
         });
-    }catch (error){
+    } catch (error) {
         console.error(error);
-        res.status(500).json({message: "Erro ao realizar agendamento"})
+        res.status(500).json({ message: "Erro ao realizar agendamento" })
     }
 });
 

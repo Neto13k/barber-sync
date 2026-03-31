@@ -78,6 +78,15 @@ export function DashboardClient() {
   };
 
   const onSubmit: SubmitHandler<IAppointmentInput> = async (data) => {
+    // Validação extra no frontend (embora o backend já valide)
+    const selectedDate = new Date(data.appointmentDate);
+    const now = new Date();
+
+    if (selectedDate < now) {
+      alert("Não é possível agendar para uma data ou hora passada.");
+      return;
+    }
+
     setIsLoading(true);
     try {
       await api.post("/appointments", data);
