@@ -42,16 +42,10 @@ export function DashboardClient() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-
-    if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
-      fetchServices();
-      fetchAppointments();
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
+    setUser(JSON.parse(storedUser!));
+    fetchServices();
+    fetchAppointments();
+  }, []);
 
   const fetchServices = async () => {
     try {

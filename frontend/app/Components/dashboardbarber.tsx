@@ -20,20 +20,9 @@ export function DashboardBarber() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-
-    if (storedUser && token) {
-      const parsedUser = JSON.parse(storedUser);
-      if (!parsedUser.isBarber) {
-        navigate("/dashboard/client");
-      } else {
-        setUser(parsedUser);
-        fetchAppointments();
-      }
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
+    setUser(JSON.parse(storedUser!));
+    fetchAppointments();
+  }, []);
 
   const fetchAppointments = async () => {
     try {
