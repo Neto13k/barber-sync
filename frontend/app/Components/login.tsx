@@ -28,7 +28,7 @@ export function Login() {
         }
       }
     } catch (error: any) {
-      const message = error.response?.data?.message || "Erro ao realizar login. Tente novamente.";
+      const message = error.response?.data?.message || "E-mail ou senha incorretos. Tente novamente.";
       setLoginError(message);
       console.error("Erro no login:", message);
     } finally {
