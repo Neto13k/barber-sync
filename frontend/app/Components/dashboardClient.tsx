@@ -111,6 +111,8 @@ export function DashboardClient() {
 
   if (!user) return <p>Carregando...</p>;
 
+  const minDateTime = new Date().toISOString().slice(0, 16);
+
   return (
     <div>
       <header>
@@ -174,6 +176,7 @@ export function DashboardClient() {
               <input
                 id="appointmentDate"
                 type="datetime-local"
+                min={minDateTime}
                 {...register("appointmentDate", { required: "A data e hora são obrigatórias" })}
               />
               {errors.appointmentDate && (
