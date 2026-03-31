@@ -102,6 +102,19 @@ export function DashboardClient() {
     }
   };
 
+  const handleCancel = async (id: number) => {
+    if (!confirm("Tem certeza que deseja cancelar este agendamento?")) return;
+
+    try {
+      await api.delete(`/appointments/${id}`);
+      alert("Agendamento cancelado com sucesso!");
+      fetchAppointments();
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Erro ao cancelar agendamento.";
+      alert(message);
+    }
+  };
+
   if (!user) return <p>Carregando...</p>;
 
   return (
@@ -128,6 +141,14 @@ export function DashboardClient() {
                       <br />
                       <em>Observações: {apt.notes}</em>
                     </>
+                  )}
+                  {apt.status === 'pending' && (
+                    <button 
+                      onClick={() => handleCancel(apt.id)}
+                      style={{ marginLeft: '10px', color: 'red', cursor: 'pointer' }}
+                    >
+                      Cancelar
+                    </button>
                   )}
                 </li>
               ))}
