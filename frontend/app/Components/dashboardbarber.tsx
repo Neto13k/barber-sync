@@ -17,6 +17,7 @@ export function DashboardBarber() {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const [appointments, setAppointments] = useState<IAppointment[]>([]);
+  const [isUpdating, setIsUpdating] = useState<number | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -34,6 +35,7 @@ export function DashboardBarber() {
   };
 
   const handleStatusUpdate = async (id: number, status: "completed" | "cancelled") => {
+    setIsUpdating(id);
     try {
       await api.put(`/appointments/${id}`, { status });
       alert(`Agendamento ${status === "completed" ? "concluído" : "cancelado"} com sucesso!`);
@@ -41,6 +43,8 @@ export function DashboardBarber() {
     } catch (error) {
       console.error("Erro ao atualizar status do agendamento:", error);
       alert("Ocorreu um erro ao atualizar o status do agendamento. Tente novamente.");
+    } finally {
+      setIsUpdating(null);
     }
   };
 
@@ -79,8 +83,18 @@ export function DashboardBarber() {
 
                   {apt.status === "pending" && (
                     <div>
-                      <button onClick={() => handleStatusUpdate(apt.id, "completed")}>Concluir</button>
-                      <button onClick={() => handleStatusUpdate(apt.id, "cancelled")}>Cancelar</button>
+                      <button 
+                        onClick={() => handleStatusUpdate(apt.id, "completed")}
+                        disabled={isUpdating === apt.id}
+                      >
+                        {isUpdating === apt.id ? "..." : "Concluir"}
+                      </button>
+                      <button 
+                        onClick={() => handleStatusUpdate(apt.id, "cancelled")}
+                        disabled={isUpdating === apt.id}
+                      >
+                        {isUpdating === apt.id ? "..." : "Cancelar"}
+                      </button>
                     </div>
                   )}
                 </li>

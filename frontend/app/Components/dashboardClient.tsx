@@ -32,6 +32,7 @@ export function DashboardClient() {
   const [services, setServices] = useState<IService[]>([]);
   const [appointments, setAppointments] = useState<IAppointment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCancelling, setIsCancelling] = useState<number | null>(null);
 
   const {
     register,
@@ -99,6 +100,7 @@ export function DashboardClient() {
   const handleCancel = async (id: number) => {
     if (!confirm("Tem certeza que deseja cancelar este agendamento?")) return;
 
+    setIsCancelling(id);
     try {
       await api.delete(`/appointments/${id}`);
       alert("Agendamento cancelado com sucesso!");
@@ -106,6 +108,8 @@ export function DashboardClient() {
     } catch (error: any) {
       const message = error.response?.data?.message || "Erro ao cancelar agendamento.";
       alert(message);
+    } finally {
+      setIsCancelling(null);
     }
   };
 
@@ -141,9 +145,10 @@ export function DashboardClient() {
                   {apt.status === 'pending' && (
                     <button 
                       onClick={() => handleCancel(apt.id)}
-                      style={{ marginLeft: '10px', color: 'red', cursor: 'pointer' }}
+                      disabled={isCancelling === apt.id}
+                      style={{ marginLeft: '10px', color: 'red', cursor: isCancelling === apt.id ? 'not-allowed' : 'pointer' }}
                     >
-                      Cancelar
+                      {isCancelling === apt.id ? "Cancelando..." : "Cancelar"}
                     </button>
                   )}
                 </li>
