@@ -38,6 +38,9 @@ try{
   const result = await pool.query(query,values);
   res.status(201).json({message: "Usuário cadastrado com sucesso!"})
 }catch (error){
+  if (error.code === '23505') { // Código de erro do PostgreSQL para violação de UNIQUE constraint
+    return res.status(409).json({ message: "Este e-mail já está cadastrado." });
+  }
   console.error(error);
   res.status(500).json({message:  "Erro interno do servidor"})
 }
@@ -58,7 +61,7 @@ router.post("/login", async (req,res) => {
     const user = result.rows[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
     if(!passwordMatch){
-      return res.status(401).json({Message: "Senha ou login não encontrados."});
+      return res.status(401).json({message: "Senha ou login não encontrados."});
     }
 
     const token = jwt.sign({ userId: user.id, isBarber: user.is_barber }, secretKey, { expiresIn: '1h' });
