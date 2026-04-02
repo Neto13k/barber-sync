@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 });
 
 //rota de cadastro
-router.post('/', async (req, res) =>{
+router.post('/register', async (req, res) =>{
 try{
   const {firstName, lastName, email, password, isBarber} = req.body;
   const hashedSenha = await bcrypt.hash(password, 10);
@@ -38,7 +38,7 @@ try{
   const result = await pool.query(query,values);
   res.status(201).json({message: "Usuário cadastrado com sucesso!"})
 }catch (error){
-  if (error.code === '23505') { // Código de erro do PostgreSQL para violação de UNIQUE constraint
+  if (error.code === '23505') { 
     return res.status(409).json({ message: "Este e-mail já está cadastrado." });
   }
   console.error(error);
