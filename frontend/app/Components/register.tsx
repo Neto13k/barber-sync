@@ -25,14 +25,12 @@ export function RegisterUser() {
     setIsLoading(true);
     setRegisterError(null);
     try {
-      await api.post("/users", data);
-      alert("Cadastro realizado com sucesso!");
+      await api.post("/users/register", data);
       navigate("/login");
-      console.log("Dados enviados com sucesso:", data);
-    } catch (error: any) {
-      const message = error.response?.data?.message || "Erro ao registrar usuário. Por favor, tente novamente.";
-      setRegisterError(message);
-      console.error("Erro ao enviar dados:", message);
+      console.log("Dados cadastrados com com sucesso:", data);
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      setRegisterError("Erro ao cadastrar usuário. Por favor, tente novamente.");
     } finally {
       setIsLoading(false);
     }
