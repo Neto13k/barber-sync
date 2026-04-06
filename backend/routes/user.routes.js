@@ -47,7 +47,7 @@ try{
 });
 
 //Rota de login
-router.post("/login", async (req,res) => {
+router.post("users/login", async (req,res) => {
   try {
     const {email, password} = req.body;
     const query =  "SELECT * FROM users WHERE email = $1"
