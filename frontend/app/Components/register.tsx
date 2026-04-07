@@ -37,55 +37,71 @@ export function RegisterUser() {
   };
 
   return (
-    <div>
-      <p>Informe seus dados </p>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h1>Criar Conta</h1>
+        <p>Junte-se à nossa barbearia premium</p>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          {...register("firstName", { required: "Nome é obrigatório" })}
-          placeholder="Nome"
-        />
-        {errors.firstName && <p>{errors.firstName.message}</p>}
+        {registerError && <div className="error-alert">{registerError}</div>}
 
-        <input
-          {...register("lastName", { minLength: 2 })}
-          placeholder="Sobrenome"
-        />
-        {errors.lastName && <p>{errors.lastName.message}</p>}
+        <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
+          <div className="form-group">
+            <label>Nome</label>
+            <input
+              {...register("firstName", { required: "Nome é obrigatório" })}
+              placeholder="Digite seu nome"
+            />
+            {errors.firstName && <p className="error-message">{errors.firstName.message}</p>}
+          </div>
 
-        <input
-          type="email"
-          placeholder="Digite seu e-mail"
-          {...register("email", { required: "Email é obrigatório" })}
-        />
-        {errors.email && <p>{errors.email.message}</p>}
+          <div className="form-group">
+            <label>Sobrenome</label>
+            <input
+              {...register("lastName", { minLength: { value: 2, message: "Mínimo de 2 caracteres" } })}
+              placeholder="Digite seu sobrenome"
+            />
+            {errors.lastName && <p className="error-message">{errors.lastName.message}</p>}
+          </div>
 
-        <input
-          type="password"
-          placeholder="Digite sua senha"
-          {...register("password", { required: "password é obrigatório" })}
-        />
-        {errors.password && <p>{errors.password.message}</p>}
-        
-        <label>
-          <input type="checkbox" {...register("isBarber")} />
-          Sou Barbeiro
-        </label>
+          <div className="form-group">
+            <label>E-mail</label>
+            <input
+              type="email"
+              placeholder="Digite seu e-mail"
+              {...register("email", { required: "Email é obrigatório" })}
+            />
+            {errors.email && <p className="error-message">{errors.email.message}</p>}
+          </div>
 
-        {registerError && <p>{registerError}</p>}
+          <div className="form-group">
+            <label>Senha</label>
+            <input
+              type="password"
+              placeholder="Escolha uma senha"
+              {...register("password", { required: "Senha é obrigatória" })}
+            />
+            {errors.password && <p className="error-message">{errors.password.message}</p>}
+          </div>
+          
+          <label className="checkbox-group">
+            <input type="checkbox" {...register("isBarber")} />
+            Sou Barbeiro
+          </label>
 
-        <br></br>
+          <button type="submit" className="btn-submit" disabled={isLoading}>
+            {isLoading ? "Finalizando cadastro..." : "Cadastrar"}
+          </button>
+        </form>
 
-        <button type="submit" disabled = {isLoading}>
-          {isLoading ? "Finalizando cadastro..." : "Enviar"}
-        </button>
-      </form>
-
-      <br></br>
-
-      <p>
-        Já tem login? <Link to="/login">Realize o login aqui.</Link>
-      </p>
+        <div className="auth-footer">
+          <p>
+            Já tem login? <Link to="/login">Realize o login aqui.</Link>
+          </p>
+          <p style={{ marginTop: '1rem' }}>
+            <Link to="/" style={{ fontSize: '1.2rem', opacity: 0.7 }}>Voltar para a Home</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
