@@ -26,18 +26,38 @@ const ServiceCard = ({ title, description, price }: ServiceCardProps) => (
 
 export function Home() {
   return (
-    <div>
-      <header>
-        <h1>BarberSync</h1>
-        <nav>
-          <Link to="/login">Login</Link> | <Link to="/register">Cadastre-se</Link>
-        </nav>
+    <div className="home-page">
+      <header className="header">
+        <div className="header-content">
+          <div className="logo">
+            Barber<span>Sync</span>
+          </div>
+          <nav className="nav">
+            <ul>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/register">Cadastre-se</Link></li>
+            </ul>
+          </nav>
+        </div>
       </header>
 
       <main>
-        <section>
-          <h2>Nossos Serviços</h2>
-          <div className="services-container">
+        <section className="hero">
+          <div className="hero-content">
+            <h1 className="hero-title">
+              Estilo & Precisão
+              <span>O seu visual em sincronia com a sua personalidade</span>
+            </h1>
+            <p className="hero-text">
+              Na BarberSync, transformamos cada corte em uma experiência única de cuidado e sofisticação.
+            </p>
+            <Link to="/register" className="btn-cta">Agendar Agora</Link>
+          </div>
+        </section>
+
+        <section className="section container">
+          <h2 style={{ textAlign: 'center', fontSize: '3.5rem', marginBottom: '4rem' }}>Nossos Serviços</h2>
+          <div className="services-grid">
             {servicesData.map((service) => (
               <ServiceCard
                 key={service.id}
@@ -49,18 +69,20 @@ export function Home() {
           </div>
         </section>
 
-        <section>
-          <h3>Gostou de algum serviço?</h3>
-          <p>
+        <section className="section container" style={{ textAlign: 'center', backgroundColor: '#fff', borderRadius: '8px', padding: '6rem' }}>
+          <h3 style={{ fontSize: '2.8rem', color: '#1A1A1A' }}>Gostou de algum serviço?</h3>
+          <p style={{ fontSize: '1.8rem', margin: '2rem 0' }}>
             Para realizar um agendamento, você precisa estar logado.
-            <br />
-            <Link to="/login">Já tem login?</Link> ou <Link to="/register">Cadastre-se aqui.</Link>
           </p>
+          <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center' }}>
+            <Link to="/login" className="btn-cta" style={{ fontSize: '1.4rem', padding: '1rem 2rem' }}>Fazer Login</Link>
+            <Link to="/register" className="btn-cta" style={{ fontSize: '1.4rem', padding: '1rem 2rem', backgroundColor: 'transparent', border: '1px solid #D4AF37', color: '#D4AF37' }}>Criar Conta</Link>
+          </div>
         </section>
       </main>
 
-      <footer>
-        <p>&copy; 2026 BarberSync - O seu estilo em sincronia.</p>
+      <footer style={{ backgroundColor: '#1A1A1A', color: '#fff', padding: '4rem 0', textAlign: 'center' }}>
+        <p style={{ fontSize: '1.4rem', opacity: 0.7 }}>&copy; 2026 BarberSync - O seu estilo em sincronia.</p>
       </footer>
     </div>
   );
