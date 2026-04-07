@@ -37,45 +37,48 @@ export function Login() {
   };
 
   return (
-    <div>
-      <p>Informe seus dados </p>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h1>Bem-vindo</h1>
+        <p>Acesse sua conta para agendar</p>
 
-      {loginError && <p>{loginError}</p>}
+        {loginError && <div className="error-alert">{loginError}</div>}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
+          <div className="form-group">
+            <label>E-mail</label>
+            <input
+              type="email"
+              placeholder="Digite seu e-mail"
+              {...register("email", { required: "E-mail é obrigatório" })}
+            />
+            {errors.email && <p className="error-message">{String(errors.email.message)}</p>}
+          </div>
 
-        <input
-          type="email"
-          placeholder="Digite seu e-mail"
-          {...register("email", { required: "E-mail é obrigatório" })}
-        />
+          <div className="form-group">
+            <label>Senha</label>
+            <input
+              type="password"
+              placeholder="Digite sua senha"
+              {...register("password", { required: "Senha é obrigatória" })}
+            />
+            {errors.password && <p className="error-message">{String(errors.password.message)}</p>}
+          </div>
 
-        {errors.email && <p>{String(errors.email.message)}</p>}
+          <button type="submit" className="btn-submit" disabled={isLoading}>
+            {isLoading ? "Entrando..." : "Entrar"}
+          </button>
+        </form>
 
-        <br></br><br></br>
-
-        <input
-          type="password"
-          placeholder="Digite sua senha"
-          {...register("password", { required: "Senha é obrigatória" })}
-        />
-
-        {errors.password && <p>{String(errors.password.message)}</p>}
-
-        <br></br><br></br>
-
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Enviando..." : "Enviar"}
-        </button>
-
-      </form>
-
-      <br></br>
-
-      <p>
-        Não tem login? <Link to="/register">Cadastre-se aqui.</Link>
-      </p>
-
+        <div className="auth-footer">
+          <p>
+            Não tem login? <Link to="/register">Cadastre-se aqui.</Link>
+          </p>
+          <p style={{ marginTop: '1rem' }}>
+            <Link to="/" style={{ fontSize: '1.2rem', opacity: 0.7 }}>Voltar para a Home</Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
