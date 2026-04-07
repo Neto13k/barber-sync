@@ -1,0 +1,18 @@
+
+// --- 1. ABSTRACTS (VARIÁVEIS E MIXINS) ---
+// Contém toda a lógica que não gera CSS diretamente (configurações)
+@use "abstracts" as *;
+
+// --- 2. BASE (RESET E GLOBAIS) ---
+// Estilos que se aplicam a todo o projeto
+@use "base/reset";
+
+// --- 3. LAYOUT (COMPONENTES ESTRUTURAIS) ---
+// Elementos que aparecem em múltiplas páginas
+@use "layout/header";
+
+// --- 4. PAGES (ESTILOS ESPECÍFICOS) ---
+// Lógica visual para cada seção/página do site
+@use "pages/home";      // Hero, Serviços, Galeria, Depoimentos
+@use "pages/auth";      // Login e Registro
+@use "pages/dashboard"; // Painéis do Cliente e Barbeiro

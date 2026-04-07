@@ -1,0 +1,75 @@
+@use "../abstracts" as *;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%; // 10px / 16px = 62.5%
+  box-sizing: border-box;
+
+  @include desktop {
+    font-size: 56.25%; // 9px
+  }
+
+  @include tablet {
+    font-size: 50%; // 8px
+  }
+}
+
+body {
+  font-family: $font-main;
+  font-weight: 400;
+  line-height: 1.6;
+  color: $color-gray-dark;
+  background-color: $color-gray-light;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-heading;
+  font-weight: 700;
+  color: $color-secondary;
+  margin-bottom: $spacing-sm;
+}
+
+p {
+  font-size: 1.6rem;
+  margin-bottom: $spacing-sm;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  @include transition-standard;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: 1.6rem;
+}
+
+// Containers
+.container {
+  max-width: $breakpoint-xl;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+.section {
+  padding: $spacing-xl 0;
+}

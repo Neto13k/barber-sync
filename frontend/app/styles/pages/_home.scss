@@ -1,0 +1,96 @@
+@use "../abstracts" as *;
+
+.hero {
+  height: 90vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  @include flex-center;
+  color: $color-white;
+  text-align: center;
+  padding: 0 $spacing-md;
+
+  @include tablet {
+    height: 70vh;
+  }
+
+  &-content {
+    max-width: 80rem;
+  }
+
+  &-title {
+    font-size: 6rem;
+    font-family: $font-heading;
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    color: $color-primary;
+    margin-bottom: $spacing-md;
+
+    @include tablet {
+      font-size: 4rem;
+    }
+
+    span {
+      color: $color-white;
+      display: block;
+      font-size: 2.5rem;
+      letter-spacing: 0.2rem;
+      margin-top: $spacing-xs;
+    }
+  }
+
+  &-text {
+    font-size: 1.8rem;
+    color: $color-gray-light;
+    margin-bottom: $spacing-lg;
+    font-weight: 300;
+  }
+
+  .btn-cta {
+    @include button-premium($color-primary, $color-secondary);
+    padding: 1.5rem 4rem;
+    font-size: 1.8rem;
+    letter-spacing: 0.2rem;
+  }
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+
+  .service-card {
+    background-color: $color-white;
+    padding: $spacing-lg;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    @include transition-standard;
+
+    &:hover {
+      transform: translateY(-1rem);
+      box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+    }
+
+    h3 {
+      font-size: 2.2rem;
+      color: $color-secondary;
+      margin-bottom: $spacing-sm;
+      font-family: $font-heading;
+    }
+
+    p {
+      font-size: 1.6rem;
+      color: $color-gray-dark;
+      margin-bottom: $spacing-md;
+    }
+
+    .price {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: $color-primary;
+    }
+  }
+}

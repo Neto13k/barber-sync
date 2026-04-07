@@ -1,0 +1,65 @@
+@use "variables" as *;
+
+// Mixin para Flexbox centralizado
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Mixin para Flexbox space-between
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Mixin para Responsividade
+@mixin mobile {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+// Mixin para Transição Suave
+@mixin transition-standard {
+  transition: all 0.3s ease-in-out;
+}
+
+// Mixin para Botão Premium
+@mixin button-premium($bg: $color-primary, $text: $color-secondary) {
+  padding: 0.8rem 2rem;
+  background-color: $bg;
+  color: $text;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  @include transition-standard;
+
+  &:hover {
+    background-color: $color-accent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    background-color: $color-gray-dark;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
