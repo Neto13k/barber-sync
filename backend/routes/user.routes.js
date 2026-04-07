@@ -47,7 +47,7 @@ try{
 });
 
 //Rota de login
-router.post("users/login", async (req,res) => {
+router.post("/login", async (req,res) => {
   try {
     const {email, password} = req.body;
     const query =  "SELECT * FROM users WHERE email = $1"
@@ -61,9 +61,11 @@ router.post("users/login", async (req,res) => {
     const user = result.rows[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
     if(!passwordMatch){
+      console.log("Senha não confere para o usuário:", email);
       return res.status(401).json({message: "Senha ou login não encontrados."});
     }
 
+    console.log("Login bem-sucedido para:", email);
     const token = jwt.sign({ userId: user.id, isBarber: user.is_barber }, secretKey, { expiresIn: '1h' });
 
     res.status(200).json({
