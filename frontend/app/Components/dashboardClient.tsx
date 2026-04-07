@@ -118,96 +118,115 @@ export function DashboardClient() {
   const minDateTime = new Date().toISOString().slice(0, 16);
 
   return (
-    <div>
-      <header>
-        <h1>Painel do Cliente</h1>
-        <p>Bem-vindo, {user.firstName}!</p>
-        <button onClick={handleLogout}>Sair</button>
+    <div className="dashboard">
+      <header className="header">
+        <div className="header-content">
+          <div className="logo">
+            Barber<span>Sync</span>
+          </div>
+          <div className="welcome-text">
+            Bem-vindo, <span>{user.firstName}</span>!
+          </div>
+          <button onClick={handleLogout} className="btn-logout">Sair</button>
+        </div>
       </header>
 
-      <main>
-                <section>
-          <h2>Meus Agendamentos</h2>
-          {appointments.length === 0 ? (
-            <p>Você ainda não possui agendamentos.</p>
-          ) : (
-            <ul>
-              {appointments.map((apt) => (
-                <li key={apt.id}>
-                  <strong>{apt.service_title}</strong> - {new Date(apt.appointment_date).toLocaleString()} <br />
-                  Status: {apt.status} | Valor: R$ {apt.service_price}
-                  {apt.notes && (
-                    <>
-                      <br />
-                      <em>Observações: {apt.notes}</em>
-                    </>
-                  )}
-                  {apt.status === 'pending' && (
-                    <button 
-                      onClick={() => handleCancel(apt.id)}
-                      disabled={isCancelling === apt.id}
-                      style={{ marginLeft: '10px', color: 'red', cursor: isCancelling === apt.id ? 'not-allowed' : 'pointer' }}
-                    >
-                      {isCancelling === apt.id ? "Cancelando..." : "Cancelar"}
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+      <main className="container">
+        <div className="dashboard-header" style={{ marginTop: '4rem' }}>
+          <h1>Painel do Cliente</h1>
+        </div>
 
-        <section>
-          <h2>Agendar serviço</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label htmlFor="serviceId">Selecione o serviço:</label>
-              <select
-                id="serviceId" 
-                {...register("serviceId", { required: "Seleção de serviço é obrigatória" })}
-              >
-                <option value="">-- Escolha um serviço --</option>
-                {services.map((service) => (
-                  <option key={service.id} value={service.id}>
-                    {service.title} - R$ {service.price}
-                  </option>
+        <div className="dashboard-grid">
+          <section className="card">
+            <h2>Novo Agendamento</h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="booking-form">
+              <div className="form-group">
+                <label htmlFor="serviceId">Selecione o serviço</label>
+                <select
+                  id="serviceId" 
+                  {...register("serviceId", { required: "Seleção de serviço é obrigatória" })}
+                >
+                  <option value="">-- Escolha um serviço --</option>
+                  {services.map((service) => (
+                    <option key={service.id} value={service.id}>
+                      {service.title} - R$ {service.price}
+                    </option>
+                  ))}
+                </select>
+                {errors.serviceId && <p className="error-message">{errors.serviceId.message}</p>}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="appointmentDate">Data e Hora</label>
+                <input
+                  id="appointmentDate"
+                  type="datetime-local"
+                  min={minDateTime}
+                  {...register("appointmentDate", { required: "A data e hora são obrigatórias" })}
+                />
+                {errors.appointmentDate && (
+                  <p className="error-message">{errors.appointmentDate.message}</p>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="notes">Observações (opcional)</label>
+                <textarea
+                  id="notes"
+                  {...register("notes", { maxLength: { value: 500, message: "Máximo de 500 caracteres" } })}
+                  placeholder="Ex: Alergia a algum produto, preferência de estilo..."
+                />
+                {errors.notes && <p className="error-message">{errors.notes.message}</p>}
+              </div>
+
+              <button type="submit" className="btn-submit" disabled={isLoading}>
+                {isLoading ? "Processando..." : "Confirmar Agendamento"}
+              </button>
+            </form>
+          </section>
+
+          <section className="card">
+            <h2>Meus Agendamentos</h2>
+            {appointments.length === 0 ? (
+              <p style={{ textAlign: 'center', padding: '2rem', opacity: 0.6 }}>Você ainda não possui agendamentos.</p>
+            ) : (
+              <div className="appointment-list">
+                {appointments.map((apt) => (
+                  <div key={apt.id} className="appointment-item">
+                    <div className="appointment-info">
+                      <span className="service-title">{apt.service_title}</span>
+                      <span className="appointment-date">{new Date(apt.appointment_date).toLocaleString()}</span>
+                      <span className="price-tag">R$ {apt.service_price}</span>
+                      {apt.notes && (
+                        <div className="client-info">Obs: {apt.notes}</div>
+                      )}
+                    </div>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
+                      <span className={`status-badge ${apt.status}`}>
+                        {apt.status === 'pending' ? 'Pendente' : 
+                         apt.status === 'confirmed' ? 'Confirmado' : 
+                         apt.status === 'completed' ? 'Concluído' : 'Cancelado'}
+                      </span>
+                      
+                      {apt.status === 'pending' && (
+                        <button 
+                          onClick={() => handleCancel(apt.id)}
+                          disabled={isCancelling === apt.id}
+                          className="btn-action btn-cancel"
+                        >
+                          {isCancelling === apt.id ? "..." : "Cancelar"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 ))}
-              </select>
-              {errors.serviceId && <p>{errors.serviceId.message}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="appointmentDate">Data e Hora:</label>
-              <input
-                id="appointmentDate"
-                type="datetime-local"
-                min={minDateTime}
-                {...register("appointmentDate", { required: "A data e hora são obrigatórias" })}
-              />
-              {errors.appointmentDate && (
-                <p>{errors.appointmentDate.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="notes">Observações (opcional):</label>
-              <textarea
-                id="notes"
-                {...register("notes", { maxLength: { value: 500, message: "Máximo de 500 caracteres" } })}
-                placeholder="Ex: Alergia a algum produto, preferência de estilo..."
-                rows={4}
-                cols={40}
-              />
-              {errors.notes && <p>{errors.notes.message}</p>}
-            </div>
-
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? "Processando..." : "Confirmar Agendamento"}
-            </button>
-          </form>
-        </section>
+              </div>
+            )}
+          </section>
+        </div>
       </main>
-    </div>  
+    </div>
   );
 }
 
