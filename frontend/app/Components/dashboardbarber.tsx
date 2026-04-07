@@ -55,55 +55,91 @@ export function DashboardBarber() {
   };
 
   return (
-    <div>
-      <header>
-        <h1> Painel do Barbeiro</h1>
-        <p>Bem-vindo, {user?.firstName}!</p>
-        <button onClick={handleLogout}>Logout</button>
+    <div className="dashboard">
+      <header className="header">
+        <div className="header-content">
+          <div className="logo">
+            Barber<span>Sync</span>
+          </div>
+          <div className="welcome-text">
+            Painel do Barbeiro | <span>{user?.firstName}</span>
+          </div>
+          <button onClick={handleLogout} className="btn-logout">Sair</button>
+        </div>
       </header>
 
-      <main>
-        <section>
-          <h2>Todos os Agendamentos</h2>
-          {appointments.length === 0 ? (
-            <p>Não há agendamentos no momento.</p>
-          ) : (
-            <ul>
-              {appointments.map((apt) => (
-                <li key={apt.id}>
-                  <p><strong>Cliente:</strong> {apt.client_name} ({apt.client_email})</p>
-                  <p><strong>Serviço:</strong> {apt.service_title} - {new Date(apt.appointment_date).toLocaleString()} <br />
-                  status: {apt.status.toLocaleLowerCase()} | Valor: {apt.service_price}</p>
-                  {apt.notes && (
-                    <>
-                    <br />
-                    <em>Observações: {apt.notes} </em>
-                    </>
-                  )}
+      <main className="container">
+        <div className="dashboard-header" style={{ marginTop: '4rem' }}>
+          <h1>Controle de Agendamentos</h1>
+        </div>
 
-                  {apt.status === "pending" && (
-                    <div>
-                      <button 
-                        onClick={() => handleStatusUpdate(apt.id, "completed")}
-                        disabled={isUpdating === apt.id}
-                      >
-                        {isUpdating === apt.id ? "..." : "Concluir"}
-                      </button>
-                      <button 
-                        onClick={() => handleStatusUpdate(apt.id, "cancelled")}
-                        disabled={isUpdating === apt.id}
-                      >
-                        {isUpdating === apt.id ? "..." : "Cancelar"}
-                      </button>
+        <section className="card">
+          <h2>Todos os Pedidos</h2>
+          {appointments.length === 0 ? (
+            <p style={{ textAlign: 'center', padding: '4rem', opacity: 0.6 }}>Não há agendamentos no momento.</p>
+          ) : (
+            <div className="appointment-list">
+              {appointments.map((apt) => (
+                <div key={apt.id} className="appointment-item">
+                  <div className="appointment-info">
+                    <span className="service-title">{apt.service_title}</span>
+                    <span className="appointment-date">{new Date(apt.appointment_date).toLocaleString()}</span>
+                    <span className="price-tag">R$ {apt.service_price}</span>
+                    <div className="client-info">
+                      <strong>Cliente:</strong> {apt.client_name} ({apt.client_email})
                     </div>
-                  )}
-                </li>
+                    {apt.notes && (
+                      <div className="client-info" style={{ marginTop: '0.5rem' }}>
+                        <strong>Obs:</strong> {apt.notes}
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
+                    <span className={`status-badge ${apt.status}`}>
+                      {apt.status === 'pending' ? 'Pendente' : 
+                       apt.status === 'confirmed' ? 'Aceito' : 
+                       apt.status === 'completed' ? 'Concluído' : 'Cancelado'}
+                    </span>
+
+                    <div className="appointment-actions">
+                      {apt.status === "pending" && (
+                        <>
+                          <button 
+                            onClick={() => handleStatusUpdate(apt.id, "confirmed")}
+                            disabled={isUpdating === apt.id}
+                            className="btn-action btn-confirm"
+                          >
+                            {isUpdating === apt.id ? "..." : "Aceitar Pedido"}
+                          </button>
+                          <button 
+                            onClick={() => handleStatusUpdate(apt.id, "cancelled")}
+                            disabled={isUpdating === apt.id}
+                            className="btn-action btn-cancel"
+                          >
+                            {isUpdating === apt.id ? "..." : "Recusar"}
+                          </button>
+                        </>
+                      )}
+
+                      {apt.status === "confirmed" && (
+                        <button 
+                          onClick={() => handleStatusUpdate(apt.id, "completed")}
+                          disabled={isUpdating === apt.id}
+                          className="btn-action btn-complete"
+                        >
+                          {isUpdating === apt.id ? "..." : "Marcar como Concluído"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
-          </section>
+        </section>
       </main>
-      </div>
+    </div>
   );  
 }
 
