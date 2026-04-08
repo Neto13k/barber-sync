@@ -25,7 +25,7 @@ export function RegisterUser() {
     setIsLoading(true);
     setRegisterError(null);
     try {
-      await api.post("/register", data);
+      await api.post("/users/register", data);
       navigate("/login");
       console.log("Dados cadastrados com com sucesso:", data);
     } catch (error) {
