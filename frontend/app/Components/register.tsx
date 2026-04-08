@@ -1,4 +1,4 @@
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { api } from "../services/api";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export function RegisterUser() {
     setIsLoading(true);
     setRegisterError(null);
     try {
-      await api.post("/users/register", data);
+      await api.post("/register", data);
       navigate("/login");
       console.log("Dados cadastrados com com sucesso:", data);
     } catch (error) {
