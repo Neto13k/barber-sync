@@ -92,12 +92,15 @@ Acesse `http://localhost:5173`
 ## 🎨 Arquitetura SCSS
 
 Organização baseada no padrão 7-1:
+
+```
 styles/
 ├── abstracts/    # Variáveis e mixins
 ├── base/         # Reset e globais
 ├── layout/       # Header e estrutura
 ├── pages/        # Home, Auth, Dashboard
 └── App.scss      # Ponto de entrada
+```
 
 ---
 
