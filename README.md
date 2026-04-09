@@ -63,6 +63,7 @@ npm install
 ```
 
 Crie o arquivo `.env` baseado no `.env.example`:
+```
 PORT=3000
 DB_USER=seu_usuario
 DB_HOST=localhost
@@ -70,6 +71,7 @@ DB_NAME=barber_sync
 DB_PASSWORD=sua_senha
 DB_PORT=5432
 JWT_SECRET=sua_chave_secreta
+```
 
 Execute o script SQL em `backend/database/database.sql` para criar as tabelas e popular os serviços iniciais.
 
