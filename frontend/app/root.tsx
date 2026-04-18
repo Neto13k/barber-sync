@@ -21,6 +21,11 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap",
   },
+  {
+    rel: "icon",
+    type: "image/svg+xml",
+    href: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cstyle%3Etext%7Bfont-family:Segoe%20UI%20Emoji,Apple%20Color%20Emoji,Segoe%20UI%20Symbol,EmojiSymbols;%7D%3C/style%3E%3Ctext x='50%25' y='80%25' font-size='80' text-anchor='middle'%3E%F0%9F%92%88%3C/text%3E%3C/svg%3E",
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
