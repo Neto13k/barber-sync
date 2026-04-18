@@ -27,7 +27,6 @@ export function RegisterUser() {
     try {
       await api.post("/users/register", data);
       navigate("/login");
-      console.log("Dados cadastrados com com sucesso:", data);
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
       setRegisterError("Erro ao cadastrar usuário. Por favor, tente novamente.");
