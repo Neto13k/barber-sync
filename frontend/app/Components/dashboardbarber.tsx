@@ -34,7 +34,7 @@ export function DashboardBarber() {
     }
   };
 
-  const handleStatusUpdate = async (id: number, status: "completed" | "cancelled") => {
+  const handleStatusUpdate = async (id: number, status: "completed" | "cancelled" | "confirmed") => {
     setIsUpdating(id);
     try {
       await api.put(`/appointments/${id}`, { status });
