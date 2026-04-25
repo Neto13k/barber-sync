@@ -26,6 +26,9 @@ interface IAppointmentInput {
   notes?: string;
 }
 
+/**
+Componente do dashboard para clientes agendarem e gerenciarem seus agendamentos.
+*/
 export function DashboardClient() {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
@@ -48,6 +51,9 @@ export function DashboardClient() {
     fetchAppointments();
   }, []);
 
+  /**
+Busca a lista de serviços disponíveis.
+*/
   const fetchServices = async () => {
     try {
       const response = await api.get("/appointments/services");
@@ -57,6 +63,9 @@ export function DashboardClient() {
     }
   };
 
+  /**
+Busca os agendamentos do cliente logado.
+*/
   const fetchAppointments = async () => {
     try {
       const response = await api.get("/appointments");
@@ -66,12 +75,18 @@ export function DashboardClient() {
     }
   };
 
+  /**
+Faz logout do usuário.
+*/
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
   };
 
+  /**
+Cria um novo agendamento com os dados do formulário.
+*/
   const onSubmit: SubmitHandler<IAppointmentInput> = async (data) => {
     // Validação extra no frontend (embora o backend já valide)
     const selectedDate = new Date(data.appointmentDate);
@@ -97,6 +112,9 @@ export function DashboardClient() {
     }
   };
 
+  /**
+Cancela um agendamento do cliente.
+*/
   const handleCancel = async (id: number) => {
     if (!confirm("Tem certeza que deseja cancelar este agendamento?")) return;
 

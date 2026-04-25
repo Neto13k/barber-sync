@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+/**
+Instância do Axios configurada para a API do backend.
+*/
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/",
   headers: {
@@ -7,7 +10,9 @@ export const api = axios.create({
   },
 });
 
-
+/**
+Intercepta requisições para adicionar o token de autenticação.
+*/
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -21,10 +26,13 @@ api.interceptors.request.use(
   }
 );
 
+/**
+Intercepta respostas para tratar erros de autenticação.
+*/
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // 401 (Não autorizado) ou 403 (Proibido/Token expirado)
+    // Trata erros de token expirado ou inválido
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
       const currentPath = window.location.pathname;
       

@@ -1,3 +1,6 @@
+/**
+Cria e exporta um pool de conexões para o banco de dados PostgreSQL.
+*/
 const { Pool } = require('pg');
 
 const pool = new Pool({

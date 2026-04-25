@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router";
 import { api } from "../services/api";
 import { useState } from "react";
 
+/**
+Componente de formulário de cadastro de usuário.
+*/
 export function RegisterUser() {
   const navigate = useNavigate();
   const [registerError, setRegisterError] = useState<string | null>(null);
@@ -21,6 +24,9 @@ export function RegisterUser() {
     },
   });
 
+  /**
+  Função chamada ao submeter o formulário de cadastro.
+  */
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     setRegisterError(null);

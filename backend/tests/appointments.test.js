@@ -23,10 +23,16 @@ const tokenBarbeiro = jwt.sign(
 const dataFutura = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 const dataPassada = new Date(Date.now() - 86400000).toISOString();
 
+/**
+Limpa os mocks antes de cada teste.
+*/
 beforeEach(() => {
     jest.clearAllMocks();
 });
 
+/**
+Testes para a rota GET /appointments/services.
+*/
 describe('GET /appointments/services', () => {
 
     test('deve retornar a lista de serviços sem precisar de token', async () => {
@@ -44,6 +50,9 @@ describe('GET /appointments/services', () => {
 
 });
 
+/**
+Testes para a rota POST /appointments.
+*/
 describe('POST /appointments', () => {
 
     test('deve retornar 401 sem token', async () => {
@@ -97,6 +106,9 @@ describe('POST /appointments', () => {
 
 });
 
+/**
+Testes para a rota GET /appointments.
+*/
 describe('GET /appointments', () => {
 
     test('deve retornar 401 sem token', async () => {
@@ -122,6 +134,9 @@ describe('GET /appointments', () => {
 
 });
 
+/**
+Testes para a rota PUT /appointments/:id.
+*/
 describe('PUT /appointments/:id', () => {
 
     test('deve retornar 403 se um cliente tentar atualizar o status', async () => {
@@ -154,6 +169,9 @@ describe('PUT /appointments/:id', () => {
 
 });
 
+/**
+Testes para a rota DELETE /appointments/:id.
+*/
 describe('DELETE /appointments/:id', () => {
 
     test('deve retornar 401 sem token', async () => {

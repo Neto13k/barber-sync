@@ -3,12 +3,18 @@ import { Link, useNavigate } from "react-router";
 import { api } from "../services/api";
 import { useState } from "react";
 
+/**
+Componente de formulário de login.
+*/
 export function Login() {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  /**
+  Função chamada ao submeter o formulário de login.
+  */
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     setLoginError(null);

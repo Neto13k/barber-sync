@@ -1,3 +1,6 @@
+/**
+Configura variáveis de ambiente para os testes, incluindo chave JWT e porta.
+*/
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 

@@ -8,10 +8,16 @@ jest.mock('../database/barber_sync', () => ({
 
 const pool = require('../database/barber_sync');
 
+/**
+Limpa os mocks antes de cada teste.
+*/
 beforeEach(() => {
     jest.clearAllMocks();
 });
 
+/**
+Testes para a rota POST /users/register.
+*/
 describe('POST /users/register', () => {
 
     test('deve cadastrar um usuário com sucesso e retornar 201', async () => {
@@ -54,6 +60,9 @@ describe('POST /users/register', () => {
 
 });
 
+/**
+Testes para a rota POST /users/login.
+*/
 describe('POST /users/login', () => {
 
     test('deve fazer login com sucesso e retornar um token JWT', async () => {

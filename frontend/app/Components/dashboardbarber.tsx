@@ -13,6 +13,9 @@ interface IAppointment {
   client_email: string;
 }
 
+/**
+Componente do dashboard para barbeiros gerenciarem agendamentos.
+*/
 export function DashboardBarber() {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
@@ -25,6 +28,9 @@ export function DashboardBarber() {
     fetchAppointments();
   }, []);
 
+  /**
+  Busca todos os agendamentos do sistema.
+  */
   const fetchAppointments = async () => {
     try {
       const response = await api.get("/appointments/all");  
@@ -34,6 +40,9 @@ export function DashboardBarber() {
     }
   };
 
+  /**
+  Atualiza o status de um agendamento específico.
+  */
   const handleStatusUpdate = async (id: number, status: "completed" | "cancelled" | "confirmed") => {
     setIsUpdating(id);
     try {
@@ -48,6 +57,9 @@ export function DashboardBarber() {
     }
   };
 
+  /**
+  Faz logout do usuário e redireciona para login.
+  */
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");

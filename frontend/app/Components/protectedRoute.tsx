@@ -5,18 +5,21 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
+/**
+Componente que protege rotas verificando autenticação e papel do usuário.
+*/
 export function ProtectedRoute({ requiredRole, children }: ProtectedRouteProps) {
   const token = localStorage.getItem("token");
   const storedUser = localStorage.getItem("user");
 
-  // 1. Verificar se existe token e usuário
+  // Verifica se o usuário está logado
   if (!token || !storedUser) {
     return <Navigate to="/login" replace />;
   }
 
   const user = JSON.parse(storedUser);
 
-  // 2. Verificar se o papel (role) é exigido e compatível
+  // Verifica se o papel do usuário corresponde ao exigido
   if (requiredRole === "barber" && !user.isBarber) {
     return <Navigate to="/dashboard/client" replace />;
   }
@@ -25,6 +28,6 @@ export function ProtectedRoute({ requiredRole, children }: ProtectedRouteProps) 
     return <Navigate to="/dashboard/barber" replace />;
   }
 
-  // 3. Se estiver tudo OK, renderiza os filhos (o componente protegido)
+  // Se tudo estiver ok, renderiza o conteúdo protegido
   return <>{children}</>;
 }

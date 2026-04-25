@@ -6,6 +6,9 @@ interface ServiceCardProps {
   price: string;
 }
 
+/**
+Lista de serviços oferecidos pela barbearia.
+*/
 const servicesData = [
   { id: 1, title: "Corte na máquina", description: "Serviço rápido e preciso com máquina profissional.", price: "R$10" },
   { id: 2, title: "Corte na tesoura", description: "Acabamento artesanal com tesoura, ideal para estilos clássicos.", price: "R$20" },
@@ -16,6 +19,9 @@ const servicesData = [
   { id: 7, title: "Barba, cabelo, bigode e sobrancelha", description: "Pacote completo incluindo sobrancelha.", price: "R$35" },
 ];
 
+/**
+Componente para exibir um cartão de serviço.
+*/
 const ServiceCard = ({ title, description, price }: ServiceCardProps) => (
   <div className="service-card">
     <h3>{title}</h3>
@@ -24,6 +30,9 @@ const ServiceCard = ({ title, description, price }: ServiceCardProps) => (
   </div>
 );
 
+/**
+Componente principal da página inicial.
+*/
 export function Home() {
   return (
     <div className="home-page">

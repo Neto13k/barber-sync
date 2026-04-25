@@ -4,7 +4,9 @@ const pool = require('../database/barber_sync');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET;
 
-//Middleware de autenticação
+/**
+Verifica se o usuário está autenticado usando um token JWT.
+*/
 function authMiddleware(req, res, next){
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
@@ -21,7 +23,9 @@ function authMiddleware(req, res, next){
         next();
     });
 }
-// Rota para buscar os serviços disponíveis
+/**
+Retorna a lista de serviços disponíveis no sistema.
+*/
 router.get('/services', async (req, res) => {
     try {
         const query = 'SELECT * FROM services  ORDER BY title ASC';
@@ -33,13 +37,15 @@ router.get('/services', async (req, res) => {
     }
 });
 
-// Rota para criar um novo agendamento
+/**
+Cria um novo agendamento para o cliente logado.
+*/
 router.post('/', authMiddleware, async (req, res) => {
     try {
         const { serviceId, appointmentDate, notes } = req.body;
         const clientId = req.user.userId;
 
-        // 1. Validar se a data é retroativa
+        // Verifica se a data escolhida não é no passado
         const selectedDate = new Date(appointmentDate);
         const now = new Date();
 
@@ -47,8 +53,7 @@ router.post('/', authMiddleware, async (req, res) => {
             return res.status(400).json({ message: "Não é possível agendar para uma data ou hora passada." });
         }
 
-        // 2. Verificar conflitos de horário (Double Booking)
-        // Vamos considerar um intervalo de 30 minutos entre agendamentos por padrão, ou buscar a duração do serviço
+        // Verifica se já existe um agendamento no mesmo horário
         const conflictCheckQuery = `
             SELECT * FROM appointments 
             WHERE appointment_date = $1 
@@ -78,7 +83,9 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 });
 
-//Rota para listar os agendamentos 
+/**
+Retorna os agendamentos do cliente logado, incluindo detalhes do serviço.
+*/
 router.get('/', authMiddleware, async (req,res) =>{
     try{
         const userId = req.user.userId;  // Faz um JOIN com a tabela de serviços para trazer o título do serviço
@@ -98,7 +105,9 @@ router.get('/', authMiddleware, async (req,res) =>{
     }
 });
 
-// Rota para o barbeiro ver todos os agendamentos
+/**
+Permite ao barbeiro ver todos os agendamentos, incluindo nome e email do cliente.
+*/
 router.get('/all', authMiddleware, async (req, res) => {
     try {
         if (!req.user.isBarber) {
@@ -120,7 +129,9 @@ router.get('/all', authMiddleware, async (req, res) => {
     }
 });
 
-// Rota para atualizar o status do agendamento (concluir/cancelar)
+/**
+Permite ao barbeiro atualizar o status de um agendamento (como concluído ou cancelado).
+*/
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;
@@ -144,7 +155,9 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
 });
 
-//Rota para cancelar agendamento (pelo cliente)
+/**
+Permite ao cliente cancelar um de seus agendamentos.
+*/
 router.delete("/:id", authMiddleware, async (req, res) => {
     try {
         const { id } = req.params;

@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET;
 
+/**
+Verifica se o usuário está autenticado usando um token JWT.
+*/
 function authMiddleware(req, res, next){
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
@@ -22,11 +25,16 @@ function authMiddleware(req, res, next){
     });
 }
 
+/**
+Retorna uma mensagem simples sobre usuários.
+*/
 router.get('/', (req, res) => {
     res.send('Lista de usuários');
 });
 
-//rota de cadastro
+/**
+Cadastra um novo usuário no sistema.
+*/
 router.post('/register', async (req, res) =>{
 try{
   const {firstName, lastName, email, password, isBarber} = req.body;
@@ -46,7 +54,9 @@ try{
 }
 });
 
-//Rota de login
+/**
+Faz o login do usuário e retorna um token JWT.
+*/
 router.post("/login", async (req,res) => {
   try {
     const {email, password} = req.body;

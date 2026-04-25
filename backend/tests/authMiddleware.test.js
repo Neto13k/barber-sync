@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
 
+/**
+Middleware que verifica a autenticidade do token JWT nas requisições.
+*/
 function authMiddleware(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -17,6 +20,9 @@ function authMiddleware(req, res, next) {
     });
 }
 
+/**
+Cria objetos mock para simular requisições, respostas e next em testes.
+*/
 function criarMocks(headers = {}) {
     const req = { headers };
     const res = {
@@ -29,6 +35,9 @@ function criarMocks(headers = {}) {
     return { req, res, next };
 }
 
+/**
+Testes para o middleware de autenticação.
+*/
 describe('authMiddleware', () => {
 
     test('deve retornar 401 quando nenhum token é enviado', () => {

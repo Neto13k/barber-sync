@@ -10,6 +10,9 @@ import {
 
 import type { Route } from "./+types/root";
 
+/**
+Define os links para fontes e ícones usados no app.
+*/
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -28,6 +31,9 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+/**
+Layout principal do HTML da aplicação.
+*/
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
@@ -46,10 +52,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+Componente principal que renderiza o outlet das rotas.
+*/
 export default function App() {
   return <Outlet />;
 }
 
+/**
+Componente para tratar erros nas rotas.
+*/
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!";
   let details = "An unexpected error occurred.";

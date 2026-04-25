@@ -1,5 +1,8 @@
 import { type RouteConfig, route, index } from "@react-router/dev/routes";
 
+/**
+Define as configurações de rotas da aplicação.
+*/
 export default [
   index("routes/home/home.tsx"),
   route("login", "routes/login/login.tsx"),

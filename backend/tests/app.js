@@ -1,3 +1,6 @@
+/**
+Cria uma instância do app Express para testes, com rotas e middlewares.
+*/
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
