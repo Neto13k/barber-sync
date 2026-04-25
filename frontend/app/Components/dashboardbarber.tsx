@@ -57,9 +57,6 @@ export function DashboardBarber() {
       };
       alert(`Agendamento ${mensagens[status]} com sucesso!`);
 
-      alert(
-        `Agendamento ${status === "completed" ? "concluído" : "cancelado"} com sucesso!`,
-      );
       fetchAppointments();
     } catch (error) {
       console.error("Erro ao atualizar status do agendamento:", error);
