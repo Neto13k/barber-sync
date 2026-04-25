@@ -1,6 +1,9 @@
 # BarberSync 💈✨
 
-Sistema de agendamento para barbearias com painel dedicado para clientes e barbeiros. Desenvolvido como projeto fullstack de portfólio.
+Sistema fullstack de agendamento para barbearias com painel dedicado para clientes e barbeiros.
+
+![Demo Cliente](.github/assets/demo1.gif)
+![Demo Barbeiro](.github/assets/demo2.gif)
 
 ---
 
@@ -22,19 +25,24 @@ O BarberSync resolve um problema real: a fricção no agendamento de serviços d
 
 ### 🖥️ Frontend
 
-* React 19 + Vite
-* TypeScript
-* React Router 7
-* React Hook Form
-* SCSS (arquitetura 7-1)
-* Axios
+| Tecnologia | Uso |
+|---|---|
+| React 19 + Vite | Interface e build |
+| TypeScript | Tipagem estática |
+| React Router 7 | Navegação e rotas protegidas |
+| React Hook Form | Formulários com validação |
+| SCSS (arquitetura 7-1) | Estilização modular |
+| Axios | Consumo da API |
 
 ### ⚙️ Backend
 
-* Node.js + Express 5
-* PostgreSQL
-* JWT para autenticação
-* Bcrypt para hash de senhas
+| Tecnologia | Uso |
+|---|---|
+| Node.js + Express 5 | Servidor e rotas |
+| PostgreSQL | Banco relacional com índices e constraints |
+| JWT | Autenticação e controle de acesso por perfil |
+| Bcrypt | Hash seguro de senhas |
+| Jest + Supertest | Testes de integração |
 
 ---
 
@@ -51,19 +59,38 @@ O BarberSync resolve um problema real: a fricção no agendamento de serviços d
 
 ---
 
+## 🧪 Testes
+
+O projeto possui testes de integração cobrindo os fluxos críticos:
+
+* Registro e login de usuários
+* Autenticação e validação de token JWT
+* Criação de agendamento com validação de data e conflito de horário
+* Controle de acesso por perfil (cliente vs barbeiro)
+* Cancelamento e atualização de agendamentos
+
+```bash
+cd backend/tests
+npm install
+npm test
+```
+
+---
+
 ## 🚀 Como rodar localmente
 
 **Pré-requisitos:** Node.js e PostgreSQL instalados.
 
 ### 🔧 Backend
 
-```bash id="bk1x9a"
+```bash
 cd backend
 npm install
 ```
 
 Crie o arquivo `.env` baseado no `.env.example`:
-```
+
+```env
 PORT=3000
 DB_USER=seu_usuario
 DB_HOST=localhost
@@ -73,15 +100,21 @@ DB_PORT=5432
 JWT_SECRET=sua_chave_secreta
 ```
 
-Execute o script SQL em `backend/database/database.sql` para criar as tabelas e popular os serviços iniciais.
+Execute o script SQL para criar as tabelas e popular os serviços iniciais:
 
-```bash id="bk2x9b"
+```bash
+psql -U seu_usuario -d barber_sync -f backend/database/database.sql
+```
+
+Inicie o servidor:
+
+```bash
 npm run dev
 ```
 
 ### 🖥️ Frontend
 
-```bash id="bk3x9c"
+```bash
 cd frontend
 npm install
 npm run dev
@@ -116,7 +149,7 @@ Todas as decisões de arquitetura, lógica de negócio e implementação foram t
 
 ## 👨‍💻 Autor
 
-Desenvolvido por **Jose Neto** como projeto de portfólio.
+Desenvolvido por **Jose Neto**
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge\&logo=linkedin\&logoColor=white)](https://www.linkedin.com/in/jose-hermes-dev/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge\&logo=github\&logoColor=white)](https://github.com/Neto13k)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jose-hermes-dev/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Neto13k)
