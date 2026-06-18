@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const userController = {
     register: async (req, res) => {
         try {
-            const { firstName, lastName, email, password, isBarber } = req.body;
+            const { firstName, lastName, email, password, isBarber } = req.validateData;
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const query = "INSERT INTO users(first_name, last_name, email, password, is_barber) VALUES($1, $2, $3, $4, $5) RETURNING *";
