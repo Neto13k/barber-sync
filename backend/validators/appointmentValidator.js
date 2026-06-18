@@ -1,16 +1,20 @@
 const Joi = require('joi');
 
 const createAppointmentSchema = Joi.object({
-    serviceId: Joi.number().integer().positive().required().messages({
-        'number.base': 'serviceId deve ser um número',
-        'number.positive': 'serviceId deve ser positivo',
-        'any.required': 'serviceId é obrigatório',
-    }),
-    appointmentDate: Joi.date().iso().required().messages({
-        'date.base': 'appointmentDate deve ser uma data válida (ISO 8601)',
-        'any.required': 'appointmentDate é obrigatório',
-    }),
-    notes: Joi.string().max(500).optional().messages({
+    serviceId: Joi.alternatives()
+        .try(Joi.number().integer().positive(), Joi.string().pattern(/^\d+$/))
+        .required()
+        .messages({
+            'any.required': 'serviceId é obrigatório',
+        }),
+    appointmentDate: Joi.alternatives()
+        .try(Joi.date().iso(), Joi.date())
+        .required()
+        .messages({
+            'date.base': 'appointmentDate deve ser uma data válida',
+            'any.required': 'appointmentDate é obrigatório',
+        }),
+    notes: Joi.string().max(500).allow('').optional().messages({
         'string.max': 'Notas não podem ter mais de 500 caracteres',
     }),
 });
