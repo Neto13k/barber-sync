@@ -99,14 +99,28 @@ Cria um novo agendamento com os dados do formulário.
 
     setIsLoading(true);
     try {
-      await api.post("/appointments", data);
+      // Convert serviceId to number to match backend validation
+      // Convert appointmentDate to proper ISO string
+      const payload = { 
+        ...data, 
+        serviceId: Number(data.serviceId),
+        appointmentDate: new Date(data.appointmentDate).toISOString()
+      };
+      console.log("Enviando payload para backend:", payload);
+      await api.post("/appointments", payload);
       
       alert("Agendamento realizado com sucesso!");
       reset();
       fetchAppointments();
     } catch (error: any) {
       const message = error.response?.data?.message || "Erro ao realizar agendamento.";
-      alert(message);
+      const details = error.response?.data?.errors;
+      console.error("Erro completo:", error);
+      if (details) {
+        alert(`${message}\nDetalhes: ${JSON.stringify(details, null, 2)}`);
+      } else {
+        alert(message);
+      }
     } finally {
       setIsLoading(false);
     }
