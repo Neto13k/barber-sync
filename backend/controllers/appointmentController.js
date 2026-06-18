@@ -14,7 +14,7 @@ const appointmentController = {
 
     create: async (req, res) => {
         try {
-            const { serviceId, appointmentDate, notes } = req.body;
+            const { serviceId, appointmentDate, notes } = req.validatedData;
             const clientId = req.user.userId;
 
             const selectedDate = new Date(appointmentDate);
