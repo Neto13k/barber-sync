@@ -20,7 +20,7 @@ const errorHandler = (err, req, res, next) => {
     // Erro de banco de dados - Email duplicado
     if (err.code === '23505') {
         return res.status(409).json({
-            message: 'Este recurso já existe (violação de constraint única)'
+            message: 'Este e-mail já está cadastrado.'
         });
     }
 
