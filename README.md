@@ -2,6 +2,16 @@
 
 > **Sistema fullstack de agendamento para barbearias** com painel dedicado para clientes e barbeiros, desenvolvido com React 19, Node.js, PostgreSQL e TypeScript.
 
+> **Sobre o projeto:** Este projeto foi desenvolvido de forma independente por José Hermes. Durante o processo, foram utilizadas ferramentas de IA como assistentes de apoio — Claude (Anthropic) para orientação arquitetural e revisão de código. Todo o planejamento, decisões técnicas e implementação foram conduzidos pelo autor.
+
+---
+
+## Veja o projeto rodando ao vivo
+
+[![Acessar aplicação](https://img.shields.io/badge/Acessar%20aplicação-barber--sync--nu.vercel.app-blue?style=for-the-badge)](https://barber-sync-nu.vercel.app)
+
+---
+
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 ![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square)
@@ -11,14 +21,15 @@
 ## 📋 Sumário
 
 - [Visão Geral](#visão-geral)
-- [Tecnologias](#-tecnologias)
-- [Funcionalidades](#-funcionalidades)
-- [Requisitos](#-requisitos)
-- [Instalação](#-instalação)
-- [Testes](#-testes)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Documentação da API](#-documentação-da-api)
-- [Contribuindo](#-contribuindo)
+- [Tecnologias](#tecnologias)
+- [Funcionalidades](#funcionalidades)
+- [Requisitos](#requisitos)
+- [Instalação](#instalação)
+- [Deploy](#deploy)
+- [Testes](#testes)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Documentação da API](#documentação-da-api)
+- [Contribuindo](#contribuindo)
 
 ---
 
@@ -49,7 +60,7 @@ O **BarberSync** resolve o problema de fricção no agendamento de serviços de 
 
 ---
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 ### Frontend
 | Tecnologia | Versão | Uso |
@@ -76,7 +87,7 @@ O **BarberSync** resolve o problema de fricção no agendamento de serviços de 
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 ### 🔐 Autenticação & Autorização
 - ✅ Cadastro e login com validação de email
@@ -110,7 +121,7 @@ O **BarberSync** resolve o problema de fricção no agendamento de serviços de 
 
 ---
 
-## 📦 Requisitos
+## Requisitos
 
 - **Node.js** ≥ 18.0.0
 - **npm** ≥ 9.0.0 ou **yarn** ≥ 3.0.0
@@ -126,7 +137,7 @@ psql --version
 
 ---
 
-## 🚀 Instalação
+## Instalação
 
 ### 1️⃣ Clone o Repositório
 
@@ -197,7 +208,51 @@ npm run dev
 
 ---
 
-## 🧪 Testes
+## Deploy
+
+O projeto está em produção e pode ser acessado em:
+
+**🔗 https://barber-sync-nu.vercel.app/**
+
+### Infraestrutura
+
+| Camada | Plataforma | Observação |
+|--------|------------|------------|
+| Frontend | [Vercel](https://vercel.com) | Build automático a cada push na `main` |
+| Backend | [Render](https://render.com) | Serviço Web com Node.js |
+| Banco de Dados | Render PostgreSQL | Instância gerenciada pelo Render |
+
+### Variáveis de Ambiente em Produção
+
+**Vercel (Frontend)**
+
+| Variável | Valor |
+|----------|-------|
+| `VITE_API_URL` | `https://barber-sync.onrender.com` |
+
+**Render (Backend)**
+
+| Variável | Descrição |
+|----------|-----------|
+| `DATABASE_URL` | String de conexão interna do PostgreSQL (gerada pelo Render) |
+| `JWT_SECRET` | Chave secreta para assinatura dos tokens JWT |
+| `NODE_ENV` | `production` |
+| `PORT` | Injetado automaticamente pelo Render |
+
+### Start Command (Render)
+
+```
+node backend/server/server.js
+```
+
+### Observações
+
+- O plano gratuito do Render suspende o serviço após 15 minutos de inatividade. A primeira requisição pode levar até 60 segundos.
+- Variáveis de ambiente adicionadas no Vercel só são aplicadas após um novo deploy.
+
+---
+
+## Testes
 
 O projeto inclui testes de integração cobrindo os fluxos críticos:
 
@@ -244,7 +299,7 @@ npm run test:coverage
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 barber-sync/
@@ -293,14 +348,14 @@ barber-sync/
 
 ---
 
-## 🔌 Documentação da API
+## Documentação da API
 
 ### Base URL
 ```
 http://localhost:3000
 ```
 
-### 🔐 Autenticação
+### Autenticação
 
 Todas as rotas autenticadas requerem header:
 ```
@@ -309,10 +364,10 @@ Authorization: Bearer <seu_token_jwt>
 
 ### Endpoints
 
-#### **Usuários**
+#### Usuários
 
 | Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
+|--------|----------|-----------|--------------| 
 | POST | `/users/register` | Cadastro de novo usuário | ❌ Não |
 | POST | `/users/login` | Login e gerar token JWT | ❌ Não |
 
@@ -349,12 +404,10 @@ Resposta (201):
 }
 ```
 
----
-
-#### **Agendamentos**
+#### Agendamentos
 
 | Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
+|--------|----------|-----------|--------------| 
 | GET | `/appointments/services` | Listar serviços | ❌ Não |
 | POST | `/appointments` | Criar agendamento | ✅ Sim |
 | GET | `/appointments` | Meus agendamentos | ✅ Sim |
@@ -362,7 +415,7 @@ Resposta (201):
 | PUT | `/appointments/:id` | Atualizar status | ✅ Sim |
 | DELETE | `/appointments/:id` | Cancelar agendamento | ✅ Sim |
 
-**POST /appointments** (Criar agendamento)
+**POST /appointments**
 ```json
 {
   "serviceId": 1,
@@ -371,8 +424,7 @@ Resposta (201):
 }
 ```
 
-**GET /appointments/services**
-Resposta (200):
+**GET /appointments/services** — Resposta (200):
 ```json
 [
   {
@@ -387,7 +439,7 @@ Resposta (200):
 
 ---
 
-## 📊 Banco de Dados
+## Banco de Dados
 
 ### Diagrama ER
 
@@ -404,22 +456,19 @@ Resposta (200):
 │ created_at       │
 └────────┬─────────┘
          │ 1
-         │
          │ N
     ┌────▼──────────────────┐
-    │   APPOINTMENTS         │
-    ├────────────────────────┤
-    │ id (PK)                │
-    │ client_id (FK)         │
-    │ service_id (FK)        │
-    │ appointment_date       │
-    │ notes                  │
-    │ status                 │
-    │ created_at             │
-    └────┬──────────┬────────┘
-         │          │
+    │   APPOINTMENTS        │
+    ├───────────────────────┤
+    │ id (PK)               │
+    │ client_id (FK)        │
+    │ service_id (FK)       │
+    │ appointment_date      │
+    │ notes                 │
+    │ status                │
+    │ created_at            │
+    └────┬──────────┬───────┘
          │          │ 1
-         │          │
          │      ┌───▼──────────────┐
          │      │    SERVICES      │
          │      ├──────────────────┤
@@ -443,7 +492,7 @@ CREATE INDEX idx_appointments_status ON appointments(status);
 
 ---
 
-## 🤝 Contribuindo
+## Contribuindo
 
 Contribuições são bem-vindas! Por favor:
 
@@ -467,21 +516,13 @@ chore: tarefas de manutenção
 
 ---
 
-## 📝 Licença
+## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
 ---
 
-## 🤖 Sobre o uso de IA
-
-Este projeto foi desenvolvido com auxílio do Claude (Anthropic) como ferramenta de aprendizado, revisão de código e produtividade.
-
-**Transparência:** Todas as decisões arquiteturais, lógica de negócio e implementação foram validadas e compreendidas pelo desenvolvedor. O objetivo é aprender fazendo — não apenas copiar código.
-
----
-
-## 👨‍💻 Autor
+## Autor
 
 **Jose Neto** | Desenvolvedor Full Stack
 
@@ -491,7 +532,7 @@ Este projeto foi desenvolvido com auxílio do Claude (Anthropic) como ferramenta
 
 ---
 
-## 📞 Suporte
+## Suporte
 
 Encontrou um bug? Abra uma [issue no GitHub](https://github.com/Neto13k/barber-sync/issues).
 
