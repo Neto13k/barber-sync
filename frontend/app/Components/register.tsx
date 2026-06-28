@@ -83,7 +83,7 @@ export function RegisterUser() {
             <input
               type="password"
               placeholder="Escolha uma senha"
-              {...register("password", { required: "Senha é obrigatória" })}
+              {...register("password", { required: "Senha é obrigatória", minLength: { value: 8, message: "Mínimo de 8 caracteres" } })}
             />
             {errors.password && <p className="error-message">{errors.password.message}</p>}
           </div>
