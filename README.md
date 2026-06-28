@@ -11,13 +11,6 @@
 [![Acessar aplicação](https://img.shields.io/badge/Acessar%20aplicação-barber--sync--nu.vercel.app-blue?style=for-the-badge)](https://barber-sync-nu.vercel.app)
 
 ---
-
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
-![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square)
-
----
-
 ## 📋 Sumário
 
 - [Visão Geral](#visão-geral)
