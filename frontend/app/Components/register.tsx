@@ -33,9 +33,13 @@ export function RegisterUser() {
     try {
       await api.post("/users/register", data);
       navigate("/login");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao cadastrar usuário:", error);
-      setRegisterError("Erro ao cadastrar usuário. Por favor, tente novamente.");
+      if (error.response?.status === 409) {
+        setRegisterError("Este e-mail já está cadastrado.");
+      } else {
+        setRegisterError("Erro ao cadastrar usuário. Por favor, tente novamente.");
+      }
     } finally {
       setIsLoading(false);
     }
